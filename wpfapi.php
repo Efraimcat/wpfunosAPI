@@ -8,7 +8,7 @@
  * Plugin Name:       WpfAPI
  * Plugin URI:        https://https://github.com/Efraimcat/wpfapi/
  * Description:       This is a description of the plugin.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Efraim Bayarri
  * Author URI:        https://efraim.cat
  * License:           GPL-2.0+
@@ -24,7 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'WPFAPI_VERSION', '1.0.0' );
+define( 'WPFAPI_VERSION', '1.0.1' );
 
 function activate_wpfapi() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wpfapi-activator.php';
