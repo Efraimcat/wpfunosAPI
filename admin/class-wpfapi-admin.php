@@ -86,7 +86,7 @@ class Wpfapi_Admin {
       return new WP_Error( 'servicio_sin_publicar', 'El servicio no está activo', array('status' => 404) );
     }
 
-
+    require_once 'partials/wpfapi-reponse-servicio.php';
 
     $response = new WP_REST_Response($post);
     $response->set_status(200);

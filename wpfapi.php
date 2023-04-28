@@ -8,7 +8,7 @@
  * Plugin Name:       WpfAPI
  * Plugin URI:        https://https://github.com/Efraimcat/wpfapi/
  * Description:       This is a description of the plugin.
- * Version:           1.0.1
+ * Version:           1.0.2
  * Author:            Efraim Bayarri
  * Author URI:        https://efraim.cat
  * License:           GPL-2.0+
