@@ -1,30 +1,30 @@
 <?php
 /**
- * @link              https://efraim.cat
- * @since             1.0.0
- * @package           Wpfapi
- *
- * @wordpress-plugin
- * Plugin Name:       WpfAPI
- * Plugin URI:        https://https://github.com/Efraimcat/wpfapi/
- * Description:       This is a description of the plugin.
- * Version:           1.0.2
- * Author:            Efraim Bayarri
- * Author URI:        https://efraim.cat
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       wpfapi
- * Domain Path:       /languages
- * Requires PHP: 	   7.4
- * Requires at least: 5.9
- * Tested up to: 	   6.2
- * GitHub Plugin URI: https://github.com/Efraimcat/wpfunosAPI
- */
+* @link              https://efraim.cat
+* @since             1.0.0
+* @package           Wpfapi
+*
+* @wordpress-plugin
+* Plugin Name:       WpfAPI
+* Plugin URI:        https://github.com/Efraimcat/wpfunosapi/
+* Description:       Funcionalidades para funos.es RESTAPI
+* Version:           1.0.2
+* Author:            Efraim Bayarri
+* Author URI:        https://efraim.cat
+* License:           GPL-2.0+
+* License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+* Text Domain:       wpfapi
+* Domain Path:       /languages
+* Requires PHP: 	   7.4
+* Requires at least: 5.9
+* Tested up to: 	   6.2
+* GitHub Plugin URI: https://github.com/Efraimcat/wpfunosAPI
+*/
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'WPFAPI_VERSION', '1.0.1' );
+define( 'WPFAPI_VERSION', '1.0.2' );
 
 function activate_wpfapi() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wpfapi-activator.php';
