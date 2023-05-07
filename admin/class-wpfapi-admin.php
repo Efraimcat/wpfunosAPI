@@ -45,10 +45,16 @@ class Wpfapi_Admin {
       'methods'  => WP_REST_Server::READABLE,
       'callback' => array( $this,'getServiciosByID' ),
     ));
+    register_rest_route( 'WpfAPI/v1', '/clientify',array(
+      'methods'  => WP_REST_Server::EDITABLE,
+      'callback' => array( $this,'postClientify' ),
+      'permission_callback' => '__return_true',
+    ));
+
   }
 
   /**
-  *
+  * https://funos.es/wp-json/wpfapi/v1/servicios/
   */
   public function getServiciosAll($request) {
     // In practice this function would fetch the desired data. Here we are just making stuff up.
@@ -89,6 +95,35 @@ class Wpfapi_Admin {
     require_once 'partials/wpfapi-reponse-servicio.php';
 
     $response = new WP_REST_Response($post);
+    $response->set_status(200);
+
+    return $response;
+  }
+
+
+  /**
+  *"hook": {
+  *  "event": "contact.saved",
+  *  "target": "https://webhook.site/e158ea1e-3c52-44a5-848d-d18cd72172ad",
+  *  "id": 1
+  *},
+  *
+  * "event": "deal.saved",
+  *https://ayuda.clientify.com/es/articles/5990763-como-conectar-clientify-con-webhooks?_ga=2.195407726.352424613.1683404055-1397990890.1683404055
+  *
+  * https://funos.es/wp-json/wpfapi/v1/clientify/
+  */
+  public function postClientify( WP_REST_Request $request ) {
+    $userIP = apply_filters('wpfunos_userIP','dummy');
+    $this->custom_logs('==> WpfAPI/v1/clientify/ (' .$userIP. ')');
+
+    $bodyrequest = json_decode( $request->get_body() );
+    $this->custom_logs('==> WpfAPI/v1/clientify/ event: '. $bodyrequest->hook->event   );
+
+
+
+
+    $response = new WP_REST_Response();
     $response->set_status(200);
 
     return $response;
