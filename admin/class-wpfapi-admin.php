@@ -37,7 +37,7 @@ class Wpfapi_Admin {
   */
   //https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/
   public function registerServiciosRoutes(){
-    register_rest_route( 'WpfAPI/v1', '/servicios',array(
+    register_rest_route( 'WpfAPI/v1', '/servicios/',array(
       'methods'  => WP_REST_Server::READABLE,
       'callback' => array( $this,'getServiciosAll' ),
     ));
@@ -45,7 +45,7 @@ class Wpfapi_Admin {
       'methods'  => WP_REST_Server::READABLE,
       'callback' => array( $this,'getServiciosByID' ),
     ));
-    register_rest_route( 'WpfAPI/v1', '/clientify',array(
+    register_rest_route( 'WpfAPI/v1', '/clientify/',array(
       'methods'  => WP_REST_Server::EDITABLE,
       'callback' => array( $this,'postClientify' ),
       'permission_callback' => '__return_true',
@@ -120,8 +120,11 @@ class Wpfapi_Admin {
     $bodyrequest = json_decode( $request->get_body() );
     $this->custom_logs('==> WpfAPI/v1/clientify/ event: '. $bodyrequest->hook->event   );
 
+    //deal.saved
+    if( $bodyrequest->hook->event == 'deal.saved') require_once 'partials/webhook/wpfapi-webhook-request-deal.php';
 
-
+    //contact.saved
+    if( $bodyrequest->hook->event == 'contact.saved') require_once 'partials/webhook/wpfapi-webhook-request-contact.php';
 
     $response = new WP_REST_Response();
     $response->set_status(200);
