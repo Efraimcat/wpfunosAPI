@@ -8,7 +8,7 @@
 * Plugin Name:       WpfAPI
 * Plugin URI:        https://github.com/Efraimcat/wpfunosapi/
 * Description:       Funcionalidades para funos.es RESTAPI
-* Version:           1.0.4
+* Version:           1.0.5
 * Author:            Efraim Bayarri
 * Author URI:        https://efraim.cat
 * License:           GPL-2.0+
@@ -24,7 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'WPFAPI_VERSION', '1.0.4' );
+define( 'WPFAPI_VERSION', '1.0.5' );
 
 function activate_wpfapi() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wpfapi-activator.php';
