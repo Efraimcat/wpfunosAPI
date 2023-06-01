@@ -45,12 +45,10 @@ class Wpfapi_Admin {
       'methods'  => WP_REST_Server::READABLE,
       'callback' => array( $this,'getServiciosByID' ),
     ));
-    //register_rest_route( 'WpfAPI/v1', '/clientify/',array(
-    //  'methods'  => WP_REST_Server::EDITABLE,
-    //  'callback' => array( $this,'postClientify' ),
-    //  'permission_callback' => '__return_true',
-    //));
-
+    register_rest_route( 'WpfAPI/v1', '/publiclog/',array(
+      'methods'  => WP_REST_Server::EDITABLE,
+      'callback' => array( $this,'postPublicLog' ),
+    ));
   }
 
   /**
@@ -100,42 +98,23 @@ class Wpfapi_Admin {
     return $response;
   }
 
-
   /**
-  *"hook": {
-  *  "event": "contact.saved",
-  *  "target": "https://webhook.site/e158ea1e-3c52-44a5-848d-d18cd72172ad",
-  *  "id": 1
-  *},
-  *
-  * "event": "deal.saved",
-  *https://ayuda.clientify.com/es/articles/5990763-como-conectar-clientify-con-webhooks?_ga=2.195407726.352424613.1683404055-1397990890.1683404055
-  *
-  * https://funos.es/wp-json/wpfapi/v1/clientify/
+  * 'WpfAPI/v1/publiclog/"Nueva entrada de API"
   */
-  public function postClientify( WP_REST_Request $request ) {
+  public function postPublicLog($request) {
     $userIP = apply_filters('wpfunos_userIP','dummy');
-    $this->custom_logs('==> WpfAPI/v1/clientify/ (' .$userIP. ')');
+    $log = $request->get_param( 'log' );
 
-    $bodyrequest = json_decode( $request->get_body() );
-    $this->custom_logs('==> WpfAPI/v1/clientify/ event: '. $bodyrequest->hook->event   );
+    $this->public_logs($this->dumpPOST( $userIP. ' - 2000 '. $log ));
 
-    //deal.saved
-    if( $bodyrequest->hook->event == 'deal.saved') require_once 'partials/webhook/wpfapi-webhook-request-deal.php';
-
-    //contact.saved
-    if( $bodyrequest->hook->event == 'contact.saved') require_once 'partials/webhook/wpfapi-webhook-request-contact.php';
-
-    //deal.deleted
-
-    $response = new WP_REST_Response();
+    $response = new WP_REST_Response('OK');
     $response->set_status(200);
 
     return $response;
   }
 
   /**
-  * Utility: create entry in the log file.
+  * https://funos.es/wp-json/wpfapi/v1/publiclog?log=Prueba de logs
   *
   */
   private function custom_logs($message){
@@ -152,6 +131,48 @@ class Wpfapi_Admin {
     $open = fopen($file, "a");
     fputs($open, $ban);
     fclose( $open );
+  }
+
+  public function public_logs($message){
+    $upload_dir = wp_upload_dir();
+    if (is_array($message)) {
+      $message = json_encode($message);
+    }
+    if (!file_exists( $upload_dir['basedir'] . '/wpfunos-logs') ) {
+      mkdir( $upload_dir['basedir'] . '/wpfunos-logs' );
+    }
+    $time = current_time("d-M-Y H:i:s:v");
+    $ban = "#$time: $message\r\n";
+    $file = $upload_dir['basedir'] . '/wpfunos-logs/wpfunos-publiclog-' . current_time("Y-m-d") . '.log';
+    $open = fopen($file, "a");
+    fputs($open, $ban);
+    fclose( $open );
+  }
+
+  public function dumpPOST($data, $indent=0) {
+    $retval = '';
+    $prefix=\str_repeat(' |  ', $indent);
+    if (\is_numeric($data)) $retval.= "Number: $data";
+    elseif (\is_string($data)) $retval.= "String: '$data'";
+    elseif (\is_null($data)) $retval.= "NULL";
+    elseif ($data===true) $retval.= "TRUE";
+    elseif ($data===false) $retval.= "FALSE";
+    elseif (is_array($data)) {
+      $indent++;
+      foreach($data AS $key => $value) {
+        $retval.= "\r\n$prefix [$key] = ";
+        $retval.= $this->dump($value, $indent);
+      }
+    }
+    elseif (is_object($data)) {
+      $retval.= "Object (".get_class($data).")";
+      $indent++;
+      foreach($data AS $key => $value) {
+        $retval.= "\r\n$prefix $key -> ";
+        $retval.= $this->dump($value, $indent);
+      }
+    }
+    return $retval;
   }
 
 }
